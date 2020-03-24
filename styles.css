@@ -1,0 +1,39 @@
+body {
+  background-color: #e28813;
+  text-align: center;
+}
+
+.container {
+  width: 85%;
+  background-color: rgb(255, 255, 255);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  min-height: 95vh;
+}
+
+/* ChessBoard */
+.tile {
+  width: 5em;
+  height: 5em;
+}
+
+.tile.black {
+  background-color: black;
+}
+
+.tile.white {
+  background-color: white;
+}
+
+.board {
+  background-color: rgb(255, 161, 37);
+  position: relative;
+  margin-left: 3%;
+}
+/* ----- */
+
+div.block {
+
+}
