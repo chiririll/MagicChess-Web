@@ -20,7 +20,7 @@ body {
 }
 
 .tile.black {
-  background-color: black;
+  background-color: maroon;
 }
 
 .tile.white {
@@ -46,6 +46,12 @@ th.label.X {
 
 th.label.Y {
   width: 1em;
+}
+
+img.figure {
+  width: 100%;
+  height: 100%;
+  background-position: center;
 }
 
 /* ----- */

@@ -4,6 +4,7 @@ let tSel = undefined;
 function createChessboard() {
     let table = document.createElement("table");
     table.className = "chessboard";
+    table.align = "center"
 
     let textRow = document.createElement("tr");
     textRow.append(document.createElement("th"));
@@ -62,10 +63,17 @@ function createChessboard() {
 }
 
 function tileClick(tileId) {
+// TODO: check step
+
+
     tile = document.getElementById(tileId);
 
-    if (tSel) {
+    if (tSel) { 
         oldTile = document.getElementById(tSel[0]);
+
+        tile.innerHTML = oldTile.innerHTML;
+        oldTile.innerHTML = '';
+
         oldTile.className = tSel[1];
         tSel = undefined;
     } else if (tile.childElementCount > 0) {
@@ -100,10 +108,11 @@ function setDefaultConfig() {
 
     for (let y = 8; y > 0; y--) {
         for (let x = 0; x < 8; x++) {
-            if (defConf[y-8][x] != ' ') {
+            if (defConf[8-y][x] != ' ') {
                 tile = document.getElementById(ltrs[x] + y);
                 figure = document.createElement("img");
-                figure.src = "../img/figures" + defConf[y-8][x] + ".svg";
+                figure.src = "img/figures/" + defConf[8-y][x] + ".svg";
+                figure.className = "figure"
                 tile.append(figure);
             }
         }
