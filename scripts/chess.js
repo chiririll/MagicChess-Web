@@ -71,8 +71,10 @@ function tileClick(tileId) {
     if (tSel) { 
         oldTile = document.getElementById(tSel[0]);
 
-        tile.innerHTML = oldTile.innerHTML;
-        oldTile.innerHTML = '';
+        if (oldTile.id != tile.id) {
+            tile.innerHTML = oldTile.innerHTML;
+            oldTile.innerHTML = '';
+        }
 
         oldTile.className = tSel[1];
         tSel = undefined;
@@ -117,4 +119,8 @@ function setDefaultConfig() {
             }
         }
     }
+}
+
+function checkStep() {
+    
 }

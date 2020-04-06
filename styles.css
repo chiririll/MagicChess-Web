@@ -15,8 +15,8 @@ body {
 /* ChessBoard */
 .tile {
   margin: 0px;
-  width: 5em;
-  height: 5em;
+  width: 5vw;
+  height: 5vw;
 }
 
 .tile.black {
@@ -41,11 +41,11 @@ th.label {
 }
 
 th.label.X {
-  height: 1em;
+  height: 1vw;
 }
 
 th.label.Y {
-  width: 1em;
+  width: 1vw;
 }
 
 img.figure {
@@ -56,6 +56,10 @@ img.figure {
 
 /* ----- */
 
-div.block {
-
+@media only screen and (max-device-width: 480px) {
+  .tile {
+    margin: 0px;
+    width: 10vw;
+    height: 10vw;
+  }
 }
