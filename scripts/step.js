@@ -22,9 +22,9 @@ function tileClick(tileId) {
         if (tile.classList[1] == "selected") {
             
             if (tile.childElementCount != 0 && tile.children[0].classList[2] == "King") {
-                if (tile.children[0].classList[2] == "White")
+                if (tile.children[0].classList[1] == "White")
                     alert("Победили черные!");
-                else
+                else if (tile.children[0].classList[1] == "Black")
                     alert("Победили белые!");
                 finished = true;
             }
