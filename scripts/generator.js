@@ -1,6 +1,3 @@
-const ltrs = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-let tSel = undefined;
-
 function createChessboard() {
     let table = document.createElement("table");
     table.className = "chessboard";
@@ -59,68 +56,22 @@ function createChessboard() {
     delete textRow;
 
     document.body.append(table);
-    setDefaultConfig();
+    setConfig(defConf);
 }
 
-function tileClick(tileId) {
-// TODO: check step
+function setConfig(config) {
+    for (color in config) {
+        for (figure in config[color]) {
+            for (let i = 0; i < config[color][figure].length; i++) {
+                pos = config[color][figure][i];
 
+                fImg = document.createElement("img");
+                fImg.src = "img/figures/" + color + "_" + figure + ".svg";
+                fImg.className = "figure " + color + " " + figure;
 
-    tile = document.getElementById(tileId);
-
-    if (tSel) { 
-        oldTile = document.getElementById(tSel[0]);
-
-        if (oldTile.id != tile.id) {
-            tile.innerHTML = oldTile.innerHTML;
-            oldTile.innerHTML = '';
-        }
-
-        oldTile.className = tSel[1];
-        tSel = undefined;
-    } else if (tile.childElementCount > 0) {
-        tSel = [tileId, tile.className];
-        tile.className = "tile selected";
+                tile = document.getElementById(pos);
+                tile.append(fImg);
+		    }
+	    }
     }
-    /*figure = document.createElement("img");
-    figure.src = "http://pngimg.com/uploads/flame/flame_PNG13261.png";*/
-
-    //tile.append(figure);
-}
-
-function setDefaultConfig() {
-    // https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
-    // lower - white, higher - black
-    // P - Pawn
-    // K - King
-    // Q - Queen
-    // R - Rook
-    // N - Knights
-    // B - Bishop
-    const defConf = [
-        "RNBQKBNR",
-        "PPPPPPPP",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "pppppppp",
-        "rnbkqbnr",
-    ]
-
-    for (let y = 8; y > 0; y--) {
-        for (let x = 0; x < 8; x++) {
-            if (defConf[8-y][x] != ' ') {
-                tile = document.getElementById(ltrs[x] + y);
-                figure = document.createElement("img");
-                figure.src = "img/figures/" + defConf[8-y][x] + ".svg";
-                figure.className = "figure"
-                tile.append(figure);
-            }
-        }
-    }
-}
-
-function checkStep() {
-    
 }

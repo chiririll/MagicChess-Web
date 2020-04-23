@@ -17,6 +17,7 @@ body {
   margin: 0px;
   width: 5vw;
   height: 5vw;
+  border: 1px solid;
 }
 
 .tile.black {
