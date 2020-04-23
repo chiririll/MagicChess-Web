@@ -1,65 +1,83 @@
 let tSel = undefined;
+let finished = false;
+let whiteStep = true;
 
 function tileClick(tileId) {
+    if (finished) return;
+    
     tile = document.getElementById(tileId);
     
-    getAvailable(tile);
-
-    /*if (tSel) { 
-        oldTile = document.getElementById(tSel);
-
-        if (oldTile.id != tile.id) {
-            tile.innerHTML = oldTile.innerHTML;
-            oldTile.innerHTML = '';
-        }
-
-        oldTile.className = tSel[1];
-        tSel = undefined;
-    } else if (tile.childElementCount > 0) {
-        tSel = [tileId, tile.className];
-        tile.className = "tile selected";
+    if (tile.childElementCount != 0 && tile.classList[1] != "selected" && ((whiteStep && tile.children[0].classList[1] == "Black") || (!whiteStep && tile.children[0].classList[1] == "White"))) {
+        alert("Сейчас не ваш ход!");
+        return;
     }
-    /*figure = document.createElement("img");
-    figure.src = "http://pngimg.com/uploads/flame/flame_PNG13261.png";*/
-
-    //tile.append(figure);*/
+    
+    if (tile.innerHTML && !tSel) {
+        tSel = tile;
+        getAvailable(tile);
+    } else if (tSel != undefined) {
+        
+        // TODO: send step to server
+        
+        if (tile.classList[1] == "selected") {
+            
+            if (tile.childElementCount != 0 && tile.children[0].classList[2] == "King") {
+                if (tile.children[0].classList[2] == "White")
+                    alert("Победили черные!");
+                else
+                    alert("Победили белые!");
+                finished = true;
+            }
+            
+            tile.innerHTML = tSel.innerHTML;
+            tSel.innerHTML = "";
+            whiteStep = !whiteStep;
+        }
+        
+        tSel = undefined;
+        resetSelection();
+    }
 }
 
 function getAvailable(tile) {
     resetSelection();
 
-    id = tile.id;
-    team = tile.children[0].classList[1];
-    figure = tile.children[0].classList[2];
+    let team = tile.children[0].classList[1];
+    let figure = tile.children[0].classList[2];
     
     switch(figure) {
         case "Pawn":
-            if (team == "White") {
+            let q = 1;
+            if (team == "Black")
+                q = -1;
+            
+            for (let i = 0; i < 3; i++) {
+                let selId = ltrs[ltrs.indexOf(tile.id[0]) + i - 1] + (Number(tile.id[1]) + q);
                 
-			}
+                if ((i == 1 && document.getElementById(selId).childElementCount == 0) || (isSameTeam(selId, team) == false) && i != 1)
+                    select(selId, tile.id, team);
+            }
+            
+            if ((tile.id[1] == 2 || tile.id[1] == 7) && isSameTeam(tile.id[0] + (Number(tile.id[1]) + q), team) == undefined)
+                select(tile.id[0] + (Number(tile.id[1]) + 2*q), tile.id, team);
             break;
         case "Rook":
-            // TODO: Fix black
-            for (let i = 0; i < 2; i++) {
-                for (let j = 0; j < 8; j++) {
-                    if (i == 0)
-                        tid = id[0] + (j+1);
-                    else
-                        tid = ltrs[j] + id[1];
-
-                    t = document.getElementById(tid);
-                
-                    if (t.childElementCount != 0) {
-                        if (tid == id)
-                            continue;
-                        
-                        if (t.children[0].classList[1] != team)
-                            t.className = "tile selected";
-                        break;
-                    }
-                    t.className = "tile selected";
-			    }
-            }
+            // Right
+            for (let i = ltrs.indexOf(tile.id[0]); i < 8; i++)
+                if (select(ltrs[i] + tile.id[1], tile.id, team) == 1)
+                    break;
+            // Left
+            for (let i = ltrs.indexOf(tile.id[0]); i >= 0; i--)
+                if (select(ltrs[i] + tile.id[1], tile.id, team) == 1)
+                    break;
+            // Top
+            for (let i = tile.id[1]; i <= 8; i++)
+                if (select(tile.id[0] + i, tile.id, team) == 1)
+                    break;
+            // Bottom
+            for (let i = tile.id[1]; i > 0; i--)
+                if (select(tile.id[0] + i, tile.id, team) == 1)
+                    break;
             break;
         case "Knight":
 
@@ -68,12 +86,53 @@ function getAvailable(tile) {
 
             break;
         case "King":
-
+            for (let x = ltrs.indexOf(tile.id[0]) - 1; x < ltrs.indexOf(tile.id[0]) + 1; x++) {
+                
+                for (let y = tile.id[1]-1; y < tile.id[1]+1; y++) {
+                    select(ltrs[x] + y, )
+                }
+            }
             break;
         case "Queen":
 
             break;
     }
+}
+
+function isSameTeam(tileId, team) {
+    if (tileId == NaN || ltrs.indexOf(tileId[0]) == -1 || !(tileId[1] >= 1 && tileId[1] <= 8))
+        return undefined;
+    
+    console.log(tileId + " " + team);
+    
+    t = document.getElementById(tileId);
+    if (t.childElementCount != 0 && t.children[0].classList[1] == team) 
+        return true;
+    else if (t.childElementCount != 0)
+        return false;
+    else
+        return undefined;
+}
+
+function select (tileId, id, team) {
+    if (tileId == NaN || ltrs.indexOf(tileId[0]) == -1 || !(tileId[1] >= 1 && tileId[1] <= 8))
+        return;
+    
+    console.log(tileId + " " + team);
+    
+    // Tile
+    t = document.getElementById(tileId);
+
+    if (t.childElementCount != 0) { 
+        if (tileId == id)
+            return;
+
+        if (t.children[0].classList[1] != team)
+            t.className = "tile selected";
+        return 1;
+    }
+
+    t.className = "tile selected";
 }
 
 function resetSelection() {
