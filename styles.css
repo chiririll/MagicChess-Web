@@ -29,7 +29,11 @@ body {
 }
 
 .tile.selected {
-    background-color: darkgreen;
+    background-color: yellow;
+}
+
+.tile.available {
+    background-color: greenyellow;
 }
 
 .chessboard {

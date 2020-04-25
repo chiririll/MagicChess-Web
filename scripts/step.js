@@ -7,17 +7,18 @@ function tileClick(tileId) {
     
     tile = document.getElementById(tileId);
     
-    if (tile.childElementCount != 0 && tile.classList[1] != "selected" && ((whiteStep && tile.children[0].classList[1] == "Black") || (!whiteStep && tile.children[0].classList[1] == "White"))) {
+    if (tile.childElementCount != 0 && tile.classList[1] != "available" && ((whiteStep && tile.children[0].classList[1] == "Black") || (!whiteStep && tile.children[0].classList[1] == "White"))) {
         alert("Сейчас не ваш ход!");
         return;
     }
     
-    if (tile.innerHTML) {
+    if (tile.innerHTML && tile.classList[1] != "available") {
         tSel = tile;
         getAvailable(tile);
+        tSel.className = "tile selected";
     } else if (tSel != undefined) {
         
-        if (tile.classList[1] == "selected") {
+        if (tile.classList[1] == "available") {
             
             /*var xhr = new XMLHttpRequest();
             xhr.open('GET', 'add_step?step=' + tSel.id + tileId, false);
@@ -202,11 +203,11 @@ function select (tileId, id, team) {
             return;
 
         if (t.children[0].classList[1] != team)
-            t.className = "tile selected";
+            t.className = "tile available";
         return 1;
     }
 
-    t.className = "tile selected";
+    t.className = "tile available";
 }
 
 function resetSelection() {
