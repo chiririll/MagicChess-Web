@@ -12,7 +12,7 @@ function tileClick(tileId) {
         return;
     }
     
-    if (tile.innerHTML && !tSel) {
+    if (tile.innerHTML) {
         tSel = tile;
         getAvailable(tile);
     } else if (tSel != undefined) {
@@ -80,30 +80,102 @@ function getAvailable(tile) {
                     break;
             break;
         case "Knight":
-
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 2] + (Number(tile.id[1]) + 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 1] + (Number(tile.id[1]) + 2), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 2] + (Number(tile.id[1]) + 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 1] + (Number(tile.id[1]) + 2), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 2] + (Number(tile.id[1]) - 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 1] + (Number(tile.id[1]) - 2), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 2] + (Number(tile.id[1]) - 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 1] + (Number(tile.id[1]) - 2), tile.id, team);
             break;
         case "Bishop":
-
-            break;
-        case "King":
-            for (let x = ltrs.indexOf(tile.id[0]) - 1; x < ltrs.indexOf(tile.id[0]) + 1; x++) {
-                
-                for (let y = tile.id[1]-1; y < tile.id[1]+1; y++) {
-                    select(ltrs[x] + y, )
-                }
+            // Top Right
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) + i] + (Number(tile.id[1]) + i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Top Left
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) - i] + (Number(tile.id[1]) + i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Bottom Right
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) + i] + (Number(tile.id[1]) - i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Bottom Left
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) - i] + (Number(tile.id[1]) - i), tile.id, team) == 1)
+                    break;
             }
             break;
+        case "King":
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 1] + (Number(tile.id[1]) + 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0])] + (Number(tile.id[1]) + 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 1] + (Number(tile.id[1]) + 1), tile.id, team);
+            
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 1] + (Number(tile.id[1])), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 1] + (Number(tile.id[1])), tile.id, team);
+            
+            select(ltrs[ltrs.indexOf(tile.id[0]) - 1] + (Number(tile.id[1]) - 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0])] + (Number(tile.id[1]) - 1), tile.id, team);
+            select(ltrs[ltrs.indexOf(tile.id[0]) + 1] + (Number(tile.id[1]) - 1), tile.id, team);
+            
+            break;
         case "Queen":
-
+            // Top Right
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) + i] + (Number(tile.id[1]) + i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Top Left
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) - i] + (Number(tile.id[1]) + i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Bottom Right
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) + i] + (Number(tile.id[1]) - i), tile.id, team) == 1)
+                    break;
+            }
+            
+            // Bottom Left
+            for (let i = 1; i <= 8; i++) {
+                if (select(ltrs[ltrs.indexOf(tile.id[0]) - i] + (Number(tile.id[1]) - i), tile.id, team) == 1)
+                    break;
+            }
+            // Right
+            for (let i = ltrs.indexOf(tile.id[0]); i < 8; i++)
+                if (select(ltrs[i] + tile.id[1], tile.id, team) == 1)
+                    break;
+            // Left
+            for (let i = ltrs.indexOf(tile.id[0]); i >= 0; i--)
+                if (select(ltrs[i] + tile.id[1], tile.id, team) == 1)
+                    break;
+            // Top
+            for (let i = tile.id[1]; i <= 8; i++)
+                if (select(tile.id[0] + i, tile.id, team) == 1)
+                    break;
+            // Bottom
+            for (let i = tile.id[1]; i > 0; i--)
+                if (select(tile.id[0] + i, tile.id, team) == 1)
+                    break;
+            break;
             break;
     }
 }
 
 function isSameTeam(tileId, team) {
+    console.log(tileId + " " + team);
     if (tileId == NaN || ltrs.indexOf(tileId[0]) == -1 || !(tileId[1] >= 1 && tileId[1] <= 8))
         return undefined;
-    
-    console.log(tileId + " " + team);
     
     t = document.getElementById(tileId);
     if (t.childElementCount != 0 && t.children[0].classList[1] == team) 
@@ -115,7 +187,7 @@ function isSameTeam(tileId, team) {
 }
 
 function select (tileId, id, team) {
-    if (tileId == NaN || ltrs.indexOf(tileId[0]) == -1 || !(tileId[1] >= 1 && tileId[1] <= 8))
+    if (tileId == NaN || ltrs.indexOf(tileId[0]) == -1 || !(tileId[1] >= 1 && tileId[1] <= 8) || tileId.length != 2)
         return;
     
     console.log(tileId + " " + team);
