@@ -17,9 +17,11 @@ function tileClick(tileId) {
         getAvailable(tile);
     } else if (tSel != undefined) {
         
-        // TODO: send step to server
-        
         if (tile.classList[1] == "selected") {
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://autochess.pythonanywhere.com/add_step?step=' + tSel.id + tileId, false);
+            xhr.send();
             
             if (tile.childElementCount != 0 && tile.children[0].classList[2] == "King") {
                 if (tile.children[0].classList[1] == "White")
